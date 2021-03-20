@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byId;
-import static com.codeborne.selenide.Selectors.byName;
+import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 
 import java.io.File;
@@ -39,20 +38,23 @@ public class TextBoxTests {
     @Test
     void checkRegistrationForm() {
 
+        String name = UUID.randomUUID().toString();
+        String lastname = UUID.randomUUID().toString();
+        String mail = UUID.randomUUID().toString() + "@" + UUID.randomUUID().toString() + ".com";
+        String phoneNumber = getRandomPhone();
+        String address = UUID.randomUUID().toString();
+
+
         open("https://demoqa.com/automation-practice-form");
 
-        String name = UUID.randomUUID().toString();
         $(byId("firstName")).setValue(name);
 
-        String lastname = UUID.randomUUID().toString();
         $(byId("lastName")).setValue(lastname);
 
-        String mail = UUID.randomUUID().toString() + "@" + UUID.randomUUID().toString() + ".com";
         $(byId("userEmail")).setValue(mail);
 
         $("label[for='gender-radio-2']").click();
 
-        String phoneNumber = getRandomPhone();
         $(byId("userNumber")).setValue(phoneNumber);
 
         // set date
@@ -61,24 +63,22 @@ public class TextBoxTests {
         $(".react-datepicker__year-select").selectOption("1904");
         $(".react-datepicker__day--026").click();
 
-
         $(byId("subjectsInput")).setValue("Ma");
         $(byId("react-select-2-option-0")).click();
-        String Subject = $(".subjects-auto-complete__multi-value__label").getText();
+        String subject = $(".subjects-auto-complete__multi-value__label").getText();
 
         $("label[for='hobbies-checkbox-3']").click();
 
         File file = new File(".gitignore");
         $("#uploadPicture").uploadFile(file);
 
-        String address = UUID.randomUUID().toString();
         $(byId("currentAddress")).setValue(address);
 
-        $x("//div[contains(text(),'Select State')]").click();
-        $x("//div[contains(text(),'Haryana')]").click();
+        $(byText("Select State")).click();
+        $(byText("Haryana")).click();
 
-        $x("//div[contains(text(),'Select City')]").click();
-        $(byId("react-select-4-option-0")).click();
+        $(byText("Select City")).click();
+        $(byText("Karnal")).click();
 
         $(byId("submit")).click();
 
@@ -89,16 +89,14 @@ public class TextBoxTests {
                 text(phoneNumber),
                 text("Female"),
                 text("26 April,1904"),
-                text(Subject),
+                text(subject),
                 text("Music"),
                 text(".gitignore"),
                 text(address),
                 text("Haryana Karnal")
         );
 
-
     }
-
 
 }
 
